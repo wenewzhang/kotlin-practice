@@ -23,7 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import com.example.myapplication2.ui.theme.MyApplication2Theme
 import androidx.compose.ui.unit.dp
-
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +35,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(Message("Androidsss", "here"))
+                    MessageCard(Message("Androidsss", "here"))
+                    Conversation(SampleData.conversationSample)
                 }
             }
         }
@@ -44,7 +46,7 @@ class MainActivity : ComponentActivity() {
 data class Message(val name:String, val title:String)
 
 @Composable
-fun Greeting(msg: Message, modifier: Modifier = Modifier) {
+fun MessageCard(msg: Message, modifier: Modifier = Modifier) {
     Row(modifier = Modifier.padding(all = 8.dp)){
         Image(
             painter = painterResource(R.drawable.ic_launcher_foreground),
@@ -78,6 +80,23 @@ fun Greeting(msg: Message, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     MyApplication2Theme {
-        Greeting(Message("Androidee","abc"))
+        MessageCard(Message("Androidee","abc"))
+    }
+}
+
+@Composable
+fun Conversation(messages: List<Message>) {
+    LazyColumn {
+        items(messages) { message ->
+            MessageCard(message)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewConversation() {
+    MyApplication2Theme {
+        Conversation(SampleData.conversationSample)
     }
 }
