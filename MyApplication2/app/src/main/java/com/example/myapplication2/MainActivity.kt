@@ -41,11 +41,14 @@ fun Greeting(msg: Message, modifier: Modifier = Modifier) {
         Column {
             Text(
                 text = "hello, ${msg.name}",
-                modifier = modifier
+                modifier = modifier,
+                color = MaterialTheme.colorScheme.secondary
             )
             Text(
                 text = msg.title,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = modifier
+
             )
         }
     }
