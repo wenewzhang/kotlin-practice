@@ -34,3 +34,4 @@ local.properties
 
 # Gradle cache
 .gradle
+app/release
