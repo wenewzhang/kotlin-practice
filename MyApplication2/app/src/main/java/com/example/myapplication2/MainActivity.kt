@@ -25,6 +25,14 @@ import com.example.myapplication2.ui.theme.MyApplication2Theme
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +43,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MessageCard(Message("Androidsss", "here"))
                     Conversation(SampleData.conversationSample)
                 }
             }
@@ -58,19 +65,37 @@ fun MessageCard(msg: Message, modifier: Modifier = Modifier) {
         )
 
         Spacer(modifier = Modifier.width(8.dp))
-
-        Column {
+        // We keep track if the message is expanded or not in this
+        // variable
+        var isExpanded by remember { mutableStateOf(false) }
+        // surfaceColor will be updated gradually from one color to the other
+        val surfaceColor by animateColorAsState(
+            if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+        )
+        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
             Text(
                 text = "hello, ${msg.name}",
                 modifier = modifier,
                 color = MaterialTheme.colorScheme.secondary
             )
-            Text(
-                text = msg.title,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = modifier
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                shadowElevation = 1.dp,
+                // surfaceColor color will be changing gradually from primary to surface
+                color = surfaceColor,
+                // animateContentSize will change the Surface size gradually
+                modifier = Modifier.animateContentSize().padding(1.dp)
+            ) {
+                Text(
+                    text = msg.title,
+                    modifier = Modifier.padding(all = 4.dp),
+                    // If the message is expanded, we display all its content
+                    // otherwise we only display the first line
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
+                    style = MaterialTheme.typography.bodyMedium
 
-            )
+                )
+            }
         }
     }
 
