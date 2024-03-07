@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import com.example.myapplication2.ui.theme.MyApplication2Theme
+import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,18 +37,18 @@ data class Message(val name:String, val title:String)
 
 @Composable
 fun Greeting(msg: Message, modifier: Modifier = Modifier) {
-Row{
-    Column {
-        Text(
-            text = "hello, ${msg.name}",
-            modifier = modifier
-        )
-        Text(
-            text = msg.title,
-            modifier = modifier
-        )
+    Row(modifier = Modifier.padding(all = 8.dp)){
+        Column {
+            Text(
+                text = "hello, ${msg.name}",
+                modifier = modifier
+            )
+            Text(
+                text = msg.title,
+                modifier = modifier
+            )
+        }
     }
-}
 
 }
 
